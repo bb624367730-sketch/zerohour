@@ -249,7 +249,7 @@ module fomo3d_sui::game {
     }
 
     /// Buy tickets for the first time. Creates a Player object for the sender.
-    /// payment: SUI coin to spend (excess is NOT refunded — send exact amount)
+    /// payment: SUI coin to spend (excess is refunded automatically)
     entry fun buy_tickets_first(
         game: &mut Game,
         payment: Coin<SUI>,
@@ -614,8 +614,7 @@ module fomo3d_sui::game {
         // ZH share — mint tokens to buyer, add SUI to zh_pool
         let zh_bps = get_zh_bps(team);
         if (zh_bps > 0) {
-            let remaining2 = balance::value(&payment_balance);
-            let zh_amount = ((remaining2 as u128) * (zh_bps as u128) / 8700) as u64;
+            let zh_amount = ((remaining as u128) * (zh_bps as u128) / 8700) as u64;
 
             // Claim existing ZH dividends before updating player state
             if (player.zh_balance > 0) {
@@ -629,7 +628,7 @@ module fomo3d_sui::game {
 
             // Update zh_per_token accumulator before minting new tokens
             if (game.zh_total_supply > 0) {
-                let zh_increment = (zh_amount * PRECISION) / game.zh_total_supply;
+                let zh_increment = ((zh_amount as u128) * (PRECISION as u128) / (game.zh_total_supply as u128)) as u64;
                 game.zh_per_token = game.zh_per_token + zh_increment;
             };
 
@@ -660,7 +659,7 @@ module fomo3d_sui::game {
         // Only update if there are existing tickets (dividends go to existing holders, not the new buyer)
         if (game.total_tickets_sold > 0) {
             let new_dividends = player_share_of_remaining;
-            let increment = (new_dividends * PRECISION) / game.total_tickets_sold;
+            let increment = ((new_dividends as u128) * (PRECISION as u128) / (game.total_tickets_sold as u128)) as u64;
             game.dividend_per_ticket = game.dividend_per_ticket + increment;
         };
 

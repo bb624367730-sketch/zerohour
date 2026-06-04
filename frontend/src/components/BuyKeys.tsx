@@ -63,13 +63,13 @@ export function BuyKeys({ game }: Props) {
           },
           onError: (err) => {
             playError();
-            toast.error(t('buy.txFailed', { msg: err.message.substring(0, 80) }));
+            toast.error(t('buy.txFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
             setStatus('idle');
           },
         },
       );
     } catch (err: any) {
-      toast.error(t('buy.error', { msg: err.message?.substring?.(0, 80) || String(err) }));
+      toast.error(t('buy.error', { msg: String(err?.message ?? err).substring(0, 80) }));
       setStatus('idle');
     }
   };

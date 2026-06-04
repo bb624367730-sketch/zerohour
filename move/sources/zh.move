@@ -1,5 +1,6 @@
-/// ZH token — dividend-bearing token for Fomo3D.
+/// ZH token — dividend-bearing token for ZeroHour.
 /// Holders earn SUI dividends from every ticket purchase.
+#[allow(deprecated_usage)]
 module fomo3d_sui::zh {
     use sui::coin::{Self, Coin, TreasuryCap};
     use sui::url::{Self, Url};
@@ -12,7 +13,7 @@ module fomo3d_sui::zh {
             9, // decimals
             b"ZH",
             b"ZH Token",
-            b"Fomo3D Dividend Token — earn SUI from every ticket purchase",
+            b"ZeroHour Dividend Token — earn SUI from every ticket purchase",
             option::some(url::new_unsafe_from_bytes(b"https://zero-hour.app")),
             ctx,
         );

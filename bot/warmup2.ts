@@ -13,7 +13,7 @@ Every round is a live experiment in game theory.
 #ZeroHour #Sui`,
 
   // ── 2. On-chain fairness ──
-  `🔗 Why build a FOMO game on-chain?
+  `🔗 Why build a countdown game on-chain?
 
 Because trust is expensive and transparency is free.
 

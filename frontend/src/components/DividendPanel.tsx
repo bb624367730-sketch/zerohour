@@ -61,13 +61,13 @@ export function DividendPanel({ game }: Props) {
           },
           onError: (err) => {
             playError();
-            toast.error(t('div.claimFailed', { msg: err.message.substring(0, 80) }));
+            toast.error(t('div.claimFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
             setClaiming(false);
           },
         },
       );
-    } catch (err) {
-      toast.error(t('div.claimFailed', { msg: String(err).substring(0, 80) }));
+    } catch (err: any) {
+      toast.error(t('div.claimFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
       setClaiming(false);
     }
   };
@@ -87,13 +87,13 @@ export function DividendPanel({ game }: Props) {
           },
           onError: (err) => {
             playError();
-            toast.error(t('div.zhClaimFailed', { msg: err.message.substring(0, 80) }));
+            toast.error(t('div.zhClaimFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
             setClaimingZh(false);
           },
         },
       );
-    } catch (err) {
-      toast.error(t('div.zhClaimFailed', { msg: String(err).substring(0, 80) }));
+    } catch (err: any) {
+      toast.error(t('div.zhClaimFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
       setClaimingZh(false);
     }
   };

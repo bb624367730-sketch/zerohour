@@ -39,7 +39,7 @@ export function AdminPanel({ game }: Props) {
           setBusy(null);
         },
         onError: (err) => {
-          toast.error(t('admin.withdrawFailed', { msg: err.message.substring(0, 80) }));
+          toast.error(t('admin.withdrawFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
           setBusy(null);
         },
       },
@@ -57,7 +57,7 @@ export function AdminPanel({ game }: Props) {
           setBusy(null);
         },
         onError: (err) => {
-          toast.error(t('admin.actionFailed', { msg: err.message.substring(0, 80) }));
+          toast.error(t('admin.actionFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
           setBusy(null);
         },
       },
@@ -78,7 +78,7 @@ export function AdminPanel({ game }: Props) {
           setBusy(null);
         },
         onError: (err) => {
-          toast.error(t('admin.seedFailed', { msg: err.message.substring(0, 80) }));
+          toast.error(t('admin.seedFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
           setBusy(null);
         },
       },

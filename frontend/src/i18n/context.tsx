@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import { type Lang, translations as allTranslations, LANG_LABELS } from './translations';
 
-const STORAGE_KEY = 'fomo3d-lang';
+const STORAGE_KEY = 'zerohour-lang';
 
 function getInitialLang(): Lang {
   try {

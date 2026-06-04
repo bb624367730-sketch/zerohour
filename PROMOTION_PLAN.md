@@ -8,7 +8,7 @@
 
 - [ ] **Twitter/X** `@ZeroHour_SUI` — 头像用倒计时时钟图（金/午夜/红配色），Banner 用游戏 UI 截图
 - [ ] **Telegram 群** `t.me/ZeroHour_SUI` — 群描述写清楚：Sui 链上倒计时游戏，testnet 可玩
-- [ ] **GitHub** repo 加 topics：`sui` `move` `gamefi` `fomo3d` `gaming` `web3`
+- [ ] **GitHub** repo 加 topics：`sui` `move` `gamefi` `gaming` `web3`
 
 ### 必须确认
 
@@ -37,7 +37,7 @@ ZeroHour 正式登陆 Sui Testnet。
 3️⃣ 队友买票，你实时分到 SUI
 4️⃣ 倒计时归零时，最后一个买票的人抱走整个奖池
 
-Fomo3D 的原汁原味，Sui 的速度和公平。
+倒计时的原汁原味，Sui 的速度和公平。
 
 🎮 现在可以玩（Testnet，免费 SUI）
 👇 链接在评论区
@@ -76,7 +76,7 @@ Play now (testnet, free SUI) 👇
 ```
 Sui Testnet 新链游 ZeroHour 上线了
 
-Fomo3D 机制：买 Ticket → 倒计时 +30s → 归零时最后买家赢全部奖池
+ZeroHour 机制：买 Ticket → 倒计时 +30s → 归零时最后买家赢全部奖池
 4 个 meme 战队，实时分红，Sui::random 真随机
 
 Testnet SUI 免费玩（水龙头领），欢迎来体验
@@ -274,13 +274,13 @@ Week 5:  主网上线
 
 ### 一句话介绍（用在各种简介里）
 
-> ZeroHour is a Fomo3D-inspired game on Sui — pick a meme team, buy tickets, earn real-time dividends, and win the jackpot when the countdown hits zero.
+> ZeroHour — on-chain countdown game on Sui. Pick a meme team, buy tickets, earn real-time dividends, and win the jackpot when the countdown hits zero.
 
-> ZeroHour 是 Sui 上的 Fomo3D 风格链游 — 选战队、买票、实时分红、倒计时归零赢奖池。
+> ZeroHour 是 Sui 上的倒计时策略链游 — 选战队、买票、实时分红、倒计时归零赢奖池。
 
 ### 为什么选 Sui（回答 "Why Sui" 的模板）
 
-> Sui 的并行执行杜绝了区块拥堵，sui::random 提供真正不可预测的随机数，亚秒级确认和极低 gas 费让 Fomo3D 的玩法第一次能在链上公平运行。
+> Sui 的并行执行杜绝了区块拥堵，sui::random 提供真正不可预测的随机数，亚秒级确认和极低 gas 费让倒计时博弈的玩法第一次能在链上公平运行。
 
 ### 不是赌博（回答合规问题的模板）
 
@@ -292,11 +292,11 @@ Week 5:  主网上线
 
 ### 给 Sui KOL 的私信
 
-> Hey [name], I built ZeroHour — a Fomo3D-style game on Sui. We're running a testnet tournament this weekend (free to play, faucet SUI). Would love for you to check it out — if you enjoy it, a quick mention would mean a lot. Link: [xxx]
+> Hey [name], I built ZeroHour — a countdown strategy game on Sui. We're running a testnet tournament this weekend (free to play, faucet SUI). Would love for you to check it out — if you enjoy it, a quick mention would mean a lot. Link: [xxx]
 
 ### 给 Sui 社区群主/管理员
 
-> 你好！我在 Sui 上做了一个 Fomo3D 风格的链游 ZeroHour，testnet 版本已经可以玩了。这周末在办测试网锦标赛（免费参与），想在群里分享给喜欢链游的朋友。可以发吗？
+> 你好！我在 Sui 上做了一个倒计时策略链游 ZeroHour，testnet 版本已经可以玩了。这周末在办测试网锦标赛（免费参与），想在群里分享给喜欢链游的朋友。可以发吗？
 
 ### 获奖者通知模板
 

@@ -159,9 +159,9 @@ Pick your team. Extend the clock. Win the jackpot.
 
 ### 推广文案核心话术
 
-> "这是 Sui 上的第一款 Fomo3D。不用花钱，testnet SUI 免费玩。赢了还能拿主网代币空投。3 天时间，看谁是最后赢家。"
+> "这是 Sui 上的倒计时链游 ZeroHour。不用花钱，testnet SUI 免费玩。赢了还能拿主网代币空投。3 天时间，看谁是最后赢家。"
 
-不要用 "Fomo3D 复刻" 这种说法，用 **"Sui 原生的倒计时赌局"** 或者 **"链上俄罗斯轮盘"** 这种更有张力的表达。
+不要用 "Fomo3D 复刻" 这种说法，用 **"Sui 原生的倒计时策略游戏"** 或者 **"链上倒计时博弈"** 这种更有张力的表达。
 
 ---
 
@@ -234,7 +234,7 @@ Pick your team. Extend the clock. Win the jackpot.
 ```
 🎮 游戏地址：[你的 testnet 前端 URL]
 🚰 Testnet SUI 水龙头：https://discord.com/channels/916379725201563759/971488439931392130（Sui 官方 Discord faucet 频道）
-📖 游戏规则：https://github.com/[你的用户名]/fomo3d-sui#readme
+📖 游戏规则：https://github.com/bb624367730-sketch/zerohour#readme
 💬 Telegram 群：[待创建]
 🐦 Twitter：[@ZeroHour_SUI 待创建]
 ```

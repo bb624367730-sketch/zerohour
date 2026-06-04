@@ -1,7 +1,7 @@
 # ZeroHour
 
 <p align="center">
-  <strong>Fomo3D-inspired blockchain game on Sui Network</strong><br>
+  <strong>Countdown-driven strategy game on Sui Network</strong><br>
   Buy tickets. Extend the clock. Win when it hits zero.
 </p>
 
@@ -11,7 +11,7 @@
 
 ZeroHour is a decentralized game where players buy tickets to extend a countdown timer. When the timer hits **zero**, the **last ticket buyer wins the jackpot**. Every ticket purchase also earns **real-time dividends** for fellow team members.
 
-It's the proven Fomo3D formula — rebuilt on Sui for speed, fairness, and low fees.
+A countdown-driven game — rebuilt on Sui for speed, fairness, and low fees.
 
 ## Game Mechanics
 
@@ -40,11 +40,11 @@ It's the proven Fomo3D formula — rebuilt on Sui for speed, fairness, and low f
 | Next round seeding | 10% |
 | Community fund | 12% |
 
-## Improvements Over Original Fomo3D
+## Why Sui
 
 - **No block stuffing** — Sui's parallel execution eliminates mempool manipulation
 - **Secure randomness** — Uses `sui::random` (validator DKG) instead of predictable block hashes
-- **No P3D token** — Simpler tokenomics, community fund replaces it
+- **No pre-mine** — Fair launch, community-owned from day one
 - **Linear bonding curve** — Gas-efficient, easy to understand pricing
 - **Batch dividends** — Claim across rounds efficiently
 
@@ -75,7 +75,7 @@ It's the proven Fomo3D formula — rebuilt on Sui for speed, fairness, and low f
 ## Project Structure
 
 ```
-fomo3d-sui/
+zerohour/
 ├── move/                    # Sui Move smart contract
 │   ├── Move.toml
 │   ├── sources/
@@ -156,7 +156,7 @@ MIT
 # ZeroHour （零时）
 
 <p align="center">
-  <strong>基于 Sui Network 的 Fomo3D 风格链游</strong><br>
+  <strong>基于 Sui Network 的倒计时策略链游</strong><br>
   买Ticket，续时间。倒计时归零，赢下所有。
 </p>
 
@@ -185,11 +185,11 @@ MIT
 | 下轮启动 | 10% |
 | 社区基金 | 12% |
 
-## 相比原版 Fomo3D 的改进
+## 为什么选择 Sui
 
 - **无区块拥堵** — Sui 并行执行，无 mempool，杜绝矿工阻塞攻击
 - **安全随机数** — `sui::random` 验证者联合生成，不可预测
-- **无 P3D 代币** — 更简洁的经济模型，社区基金替代
+- **公平启动** — 无预挖、无团队预留，社区共有
 - **线性定价曲线** — Gas节省，简单透明
 
 ## 技术栈

@@ -29,7 +29,7 @@
 >
 > Play now (testnet): [link]
 >
-> #ZeroHour #Sui #GameFi #Fomo3D #Web3Gaming
+> #ZeroHour #Sui #GameFi #Web3Gaming
 
 #### Chinese version:
 
@@ -80,7 +80,7 @@
 > - Sub-second finality
 > - Pennies per transaction
 >
-> Fomo3D walked so ZeroHour could run.
+> The countdown never lies. ZeroHour delivers.
 
 ---
 
@@ -199,7 +199,7 @@
 ## Key Messaging
 
 ### For Crypto-Native Audience
-- "Fomo3D's proven mechanics, reborn on Sui."
+- "Countdown-driven strategy, built on Sui."
 - "No presale, no team allocation, 100% on-chain."
 - "Every ticket a bid. Every second a gamble. Zero hour the reckoning."
 
@@ -220,11 +220,11 @@
 **Q: Is this gambling?**  
 A: ZeroHour is a strategy game. Team choice, round timing, and meta analysis all affect outcomes. No house edge — the contract takes no profit beyond the transparent 2% community fund.
 
-**Q: How is this different from the original Fomo3D?**  
-A: Built on Sui instead of Ethereum — meaning no gas wars, no block stuffing, true on-chain randomness, and sub-cent transaction fees.
+**Q: What blockchain is this built on?**
+A: ZeroHour is built on Sui — meaning parallel execution, no gas wars, true on-chain randomness (sui::random), and sub-cent transaction fees.
 
-**Q: Can the devs steal the jackpot?**  
-A: No. The contract has no admin withdrawal function for player funds. All allocations are hardcoded and verifiable on-chain.
+**Q: Can the devs steal the jackpot?**
+A: No. The contract has no admin withdrawal function for player funds. All allocations are hardcoded and verifiable on-chain. The admin can only withdraw the 2% community fund.
 
 **Q: What happens if nobody buys for 24 hours?**  
 A: The countdown expires and the last buyer wins. The timer maxes out at 24 hours to guarantee the game eventually ends.
