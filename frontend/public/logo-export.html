@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeroHour Logo — Twitter Export</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0b0f19; color: #f1f5f9; font-family: system-ui; padding: 48px 24px; }
+  h1 { text-align: center; font-size: 1.2rem; margin-bottom: 8px; }
+  .sub { text-align: center; color: #64748b; font-size: 0.8rem; margin-bottom: 40px; }
+  .cards { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; }
+  .card { background: #111827; border: 1px solid #1e293b; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .card h3 { font-size: 0.85rem; color: #94a3b8; }
+  .card .size { font-size: 0.7rem; color: #475569; }
+  canvas { border-radius: 8px; background: #0b0f19; }
+  .card.light canvas { background: #f8fafc; }
+  button {
+    background: #ef4444; color: white; border: none; border-radius: 8px;
+    padding: 10px 24px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    letter-spacing: 0.5px; transition: background 0.15s;
+  }
+  button:hover { background: #dc2626; }
+  .note { color: #475569; font-size: 0.7rem; max-width: 480px; text-align: center; margin-top: 40px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<h1>ZeroHour Logo &mdash; Twitter Export (2x Retina)</h1>
+<p class="sub">点击按钮下载高清 PNG</p>
+
+<div class="cards">
+
+  <div class="card">
+    <h3>Avatar / Profile Picture</h3>
+    <span class="size">400 &times; 400 px @2x</span>
+    <canvas id="c-avatar" width="800" height="800" style="width:400px;height:400px"></canvas>
+    <button onclick="download('c-avatar', 'zerohour-avatar.png')">Download</button>
+  </div>
+
+  <div class="card">
+    <h3>Header / Cover Banner</h3>
+    <span class="size">1500 &times; 500 px @2x</span>
+    <canvas id="c-banner" width="3000" height="1000" style="width:450px;height:150px"></canvas>
+    <button onclick="download('c-banner', 'zerohour-banner.png')">Download</button>
+  </div>
+
+  <div class="card">
+    <h3>Tweet / Post Image</h3>
+    <span class="size">1200 &times; 675 px @2x</span>
+    <canvas id="c-tweet" width="2400" height="1350" style="width:480px;height:270px"></canvas>
+    <button onclick="download('c-tweet', 'zerohour-tweet.png')">Download</button>
+  </div>
+
+  <div class="card light">
+    <h3>Tweet Image (Light)</h3>
+    <span class="size">1200 &times; 675 px @2x &middot; white bg</span>
+    <canvas id="c-tweet-light" width="2400" height="1350" style="width:480px;height:270px"></canvas>
+    <button onclick="download('c-tweet-light', 'zerohour-tweet-light.png')">Download</button>
+  </div>
+
+</div>
+
+<p class="note">
+  All images rendered at <strong>2x retina</strong> for crisp display on high-DPI screens.<br>
+  Use <strong>Avatar</strong> for profile pic, <strong>Banner</strong> for cover, <strong>Tweet Image</strong> for posts.
+</p>
+
+<script>
+  var gold = '#f59e0b';
+  var red = '#ef4444';
+  var white = '#f1f5f9';
+  var black = '#0f172a';
+  var bg = '#0b0f19';
+  var S = 2; // scale factor
+
+  function drawClock(ctx, cx, cy, r, ringColor, bgFill) {
+    if (bgFill) { ctx.beginPath(); ctx.arc(cx, cy, r + 4*S, 0, Math.PI * 2); ctx.fillStyle = bgFill; ctx.fill(); }
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.strokeStyle = ringColor; ctx.lineWidth = r * 0.14; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, cy - r);
+    ctx.strokeStyle = gold; ctx.lineWidth = r * 0.09; ctx.lineCap = 'round'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, cy - r * 0.7);
+    ctx.strokeStyle = red; ctx.lineWidth = r * 0.055; ctx.lineCap = 'round'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, r * 0.1, 0, Math.PI * 2); ctx.fillStyle = red; ctx.fill();
+  }
+
+  function drawText(ctx, x, y, size, color) {
+    ctx.font = '900 ' + (size*S) + 'px "Arial Black", Impact, "Segoe UI Black", sans-serif';
+    ctx.fillStyle = color;
+    ctx.fillText('ZEROHOUR', x - ctx.measureText('ZEROHOUR').width / 2, y);
+  }
+
+  var W, H;
+
+  // Avatar 800×800 (= 400×400 @2x)
+  (function() {
+    var c = document.getElementById('c-avatar'), ctx = c.getContext('2d');
+    W = 800; H = 800;
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    drawClock(ctx, 400, 310, 160, white, null);
+    drawText(ctx, 400, 620, 36, white);
+  })();
+
+  // Banner 3000×1000 (= 1500×500 @2x)
+  (function() {
+    var c = document.getElementById('c-banner'), ctx = c.getContext('2d');
+    W = 3000; H = 1000;
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)'; ctx.lineWidth = S;
+    for (var i = 0; i < W; i += 80) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, H); ctx.stroke(); }
+
+    var teams = [
+      { emoji: '🐕', name: 'DOGE',  color: '#f59e0b', div: 66, jp: 20 },
+      { emoji: '🐸', name: 'PEPE',  color: '#4ade80', div: 51, jp: 35 },
+      { emoji: '🐒', name: 'MONKEY', color: '#ef4444', div: 36, jp: 50 },
+      { emoji: '🐱', name: 'CAT',   color: '#3b82f6', div: 43, jp: 43 }
+    ];
+
+    ctx.font = '900 ' + (52*S) + 'px "Arial Black", Impact, sans-serif';
+    ctx.fillStyle = white;
+    ctx.textAlign = 'center';
+    ctx.fillText('ZEROHOUR', 1500, 144);
+
+    ctx.fillStyle = red;
+    ctx.fillRect(1380, 176, 240, 6);
+
+    var cardW = 580, cardH = 680, cardY = 240;
+    var totalW = cardW * 4 + 60 * 3;
+    var startX = (W - totalW) / 2;
+
+    for (var i = 0; i < 4; i++) {
+      var t = teams[i];
+      var cx = startX + i * (cardW + 60);
+      var cy = cardY;
+
+      ctx.fillStyle = '#111827';
+      ctx.strokeStyle = t.color; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.roundRect(cx, cy, cardW, cardH, 32); ctx.fill(); ctx.stroke();
+
+      ctx.font = (72*S) + 'px "Segoe UI Emoji", "Apple Color Emoji", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(t.emoji, cx + cardW / 2, cy + 200);
+
+      ctx.font = '900 ' + (32*S) + 'px "Arial Black", Impact, sans-serif';
+      ctx.fillStyle = t.color;
+      ctx.fillText(t.name, cx + cardW / 2, cy + 296);
+
+      var barX = cx + 60, barW = cardW - 120;
+      var divY = cy + 360;
+      ctx.font = '600 ' + (16*S) + 'px system-ui, sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.textAlign = 'left';
+      ctx.fillText('Dividends', barX, divY - 16);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = white;
+      ctx.fillText(t.div + '%', barX + barW, divY - 16);
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath(); ctx.roundRect(barX, divY, barW, 28, 14); ctx.fill();
+      ctx.fillStyle = t.color;
+      ctx.beginPath(); ctx.roundRect(barX, divY, barW * t.div / 100, 28, 14); ctx.fill();
+
+      var jpY = divY + 96;
+      ctx.font = '600 ' + (16*S) + 'px system-ui, sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      ctx.textAlign = 'left';
+      ctx.fillText('Jackpot', barX, jpY - 16);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = white;
+      ctx.fillText(t.jp + '%', barX + barW, jpY - 16);
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath(); ctx.roundRect(barX, jpY, barW, 28, 14); ctx.fill();
+      ctx.fillStyle = red;
+      ctx.beginPath(); ctx.roundRect(barX, jpY, barW * t.jp / 100, 28, 14); ctx.fill();
+
+      ctx.textAlign = 'center';
+      ctx.font = '600 ' + (18*S) + 'px system-ui, sans-serif';
+      ctx.fillStyle = t.color;
+      ctx.fillText('PICK', cx + cardW / 2, cy + cardH - 44);
+    }
+
+    ctx.textAlign = 'center';
+    ctx.font = '600 ' + (22*S) + 'px system-ui, sans-serif';
+    ctx.fillStyle = '#64748b';
+    ctx.fillText('Buy tickets. Extend the clock. Win the jackpot.', 1500, 972);
+
+    ctx.textAlign = 'start';
+  })();
+
+  // Tweet dark 2400×1350 (= 1200×675 @2x)
+  (function() {
+    var c = document.getElementById('c-tweet'), ctx = c.getContext('2d');
+    W = 2400; H = 1350;
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    drawClock(ctx, 1200, 460, 280, white, null);
+    drawText(ctx, 1200, 1020, 110, white);
+  })();
+
+  // Tweet light 2400×1350
+  (function() {
+    var c = document.getElementById('c-tweet-light'), ctx = c.getContext('2d');
+    W = 2400; H = 1350;
+    var lightBg = '#f8fafc';
+    ctx.fillStyle = lightBg; ctx.fillRect(0, 0, W, H);
+    drawClock(ctx, 1200, 460, 280, black, lightBg);
+    drawText(ctx, 1200, 1020, 110, black);
+  })();
+
+  function download(canvasId, filename) {
+    var canvas = document.getElementById(canvasId);
+    var link = document.createElement('a');
+    link.download = filename;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+[package]
+name = "fomo3d_sui"
+version = "0.1.0"
+edition = "2024"
+
+[addresses]
+fomo3d_sui = "0x0"
+
+

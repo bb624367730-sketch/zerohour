@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.log
+.DS_Store
+move/build/
+.move/
+bot/chrome-profile/
+bot/.chrome-profile/
+.claude/

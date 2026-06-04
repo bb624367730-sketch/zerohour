@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZeroHour 玩法介绍</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a28;
+    --border: #252538;
+    --gold: #d4a843;
+    --gold-dim: #8b6914;
+    --purple: #7c3aed;
+    --purple-dim: #4c1d95;
+    --text: #e2e2e8;
+    --text-dim: #9898b0;
+    --red: #ef4444;
+    --green: #22c55e;
+    --blue: #3b82f6;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 60px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 100%, rgba(212,168,67,0.08) 0%, transparent 50%),
+                var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--gold) 0%, #f0d060 50%, var(--gold-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .subtitle {
+    margin-top: 12px;
+    font-size: 1.2rem;
+    color: var(--text-dim);
+  }
+  .hero .tagline {
+    margin-top: 8px;
+    font-size: 1rem;
+    color: var(--purple);
+    font-weight: 600;
+  }
+
+  /* ── Container ── */
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ── Section ── */
+  section {
+    margin-bottom: 56px;
+    padding: 36px 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: border-color 0.3s;
+  }
+  section:hover {
+    border-color: #3a3050;
+  }
+  section h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  section h2 .icon {
+    font-size: 1.5rem;
+  }
+  section p {
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+  section ul, section ol {
+    color: var(--text-dim);
+    padding-left: 24px;
+    margin-bottom: 12px;
+  }
+  section li {
+    margin-bottom: 8px;
+  }
+  section li strong {
+    color: var(--text);
+  }
+
+  /* ── Info cards ── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .info-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .info-card .card-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+  .info-card .card-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--gold);
+  }
+  .info-card .card-label {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* ── Highlight box ── */
+  .highlight {
+    background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(212,168,67,0.08));
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-top: 16px;
+  }
+  .highlight p {
+    color: var(--text);
+    margin: 0;
+  }
+
+  /* ── Step list ── */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin-top: 16px;
+  }
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding: 0;
+  }
+  .steps li::before {
+    content: counter(step);
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--purple);
+    color: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .steps li div h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .steps li div p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  /* ── Fund flow diagram ── */
+  .fund-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+    justify-content: center;
+  }
+  .fund-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 100px;
+  }
+  .fund-box .pct {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+  }
+  .fund-box .lbl {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  /* ── Team cards ── */
+  .teams {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .team-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .team-card:hover { transform: translateY(-2px); }
+  .team-card .team-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+  }
+  .team-card .team-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ── Table ── */
+  .price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 0.9rem;
+  }
+  .price-table th, .price-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .price-table th {
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+  .price-table td {
+    color: var(--text);
+  }
+  .price-table tr:hover td {
+    background: rgba(124,58,237,0.05);
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+  .page-footer a {
+    color: var(--purple);
+    text-decoration: none;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero { padding: 48px 20px 36px; }
+    .container { padding: 28px 16px 60px; }
+    section { padding: 24px 20px; margin-bottom: 32px; }
+    .info-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>ZeroHour</h1>
+  <p class="subtitle">时间是金钱。最后一个买家通吃一切。</p>
+  <p class="tagline">⏳ Built on Sui · Powered by the Clock · Driven by Greed</p>
+</header>
+
+<main class="container">
+
+  <!-- 游戏概述 -->
+  <section>
+    <h2><span class="icon">🎯</span>什么是 ZeroHour？</h2>
+    <p>
+      ZeroHour 是一款部署在 <strong>Sui 区块链</strong>上的 FOMO（害怕错过）博弈游戏。
+      玩家购买门票参与本轮游戏，每笔购买都会<strong>重置倒计时</strong>。
+      当倒计时归零时，<strong>最后一位购买门票的玩家</strong>赢得巨额奖池。
+    </p>
+    <div class="highlight">
+      <p>💡 <strong>核心魅力：</strong>每笔购买都在同时做三件事 —— 争夺奖池、为战队赚分红、触发随机空投。一次操作，三重收益。</p>
+    </div>
+  </section>
+
+  <!-- 核心玩法 -->
+  <section>
+    <h2><span class="icon">🎮</span>核心玩法</h2>
+    <ol class="steps">
+      <li>
+        <div>
+          <h3>选择战队</h3>
+          <p>四支战队供你选择：🐕 Doge、🐸 Pepe、🐒 Monkey、🐱 Cat。一旦加入本轮，无法更换战队。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>购买门票</h3>
+          <p>使用 SUI 代币购买门票。每张门票价格随已售出门票数量<strong>线性增长</strong>（线性联合曲线）。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>倒计时重置</h3>
+          <p>每笔购买将倒计时<strong>重置为初始时间</strong>。只要还有人买，游戏就不会结束。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>最后一刻</h3>
+          <p>当倒计时<strong>归零</strong>时，最后一位购买门票的玩家赢得奖池，本轮结束。新轮次自动开启。</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 门票定价 -->
+  <section>
+    <h2><span class="icon">📈</span>门票定价机制</h2>
+    <p>
+      ZeroHour 采用<strong>线性联合曲线</strong>定价模型。随着已售出门票数量增加，每张门票的价格稳步上升。
+      这意味着<strong>越早购买越便宜</strong>，越往后成本越高 —— 但后期的奖池也越大。
+    </p>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="card-icon">🏷️</div>
+        <div class="card-value">P = P₀ + k × n</div>
+        <div class="card-label">线性定价公式</div>
+      </div>
+      <div class="info-card">
+        <div class="card-icon">📊</div>
+        <div class="card-value">逐渐攀升</div>
+        <div class="card-label">价格随时间增长</div>
+      </div>
+      <div class="info-card">
+        <div class="card-icon">⚡</div>
+        <div class="card-value">无上限</div>
+        <div class="card-label">越晚越贵不设顶</div>
+      </div>
+    </div>
+    <p style="margin-top:16px;">
+      起始价格极低，让每个人都有入场机会。随着竞争加剧，门票价格攀升，奖池同步膨胀 ——
+      这正是博弈的张力所在。
+    </p>
+  </section>
+
+  <!-- 战队系统 -->
+  <section>
+    <h2><span class="icon">⚔️</span>战队系统</h2>
+    <p>四大战队，四大社区。你为哪一方而战？</p>
+    <div class="teams">
+      <div class="team-card">
+        <div class="team-emoji">🐕</div>
+        <div class="team-name">Doge</div>
+        <p style="color:var(--text-dim);font-size:0.85rem;margin-top:4px;">To the moon!</p>
+      </div>
+      <div class="team-card">
+        <div class="team-emoji">🐸</div>
+        <div class="team-name">Pepe</div>
+        <p style="color:var(--text-dim);font-size:0.85rem;margin-top:4px;">Rare Pepe energy</p>
+      </div>
+      <div class="team-card">
+        <div class="team-emoji">🐒</div>
+        <div class="team-name">Monkey</div>
+        <p style="color:var(--text-dim);font-size:0.85rem;margin-top:4px;">Ape together strong</p>
+      </div>
+      <div class="team-card">
+        <div class="team-emoji">🐱</div>
+        <div class="team-name">Cat</div>
+        <p style="color:var(--text-dim);font-size:0.85rem;margin-top:4px;">Nine lives</p>
+      </div>
+    </div>
+    <div class="highlight" style="margin-top:20px;">
+      <p>🔒 选择战队后<strong>本轮内无法更改</strong>。你的买入金额将计入该战队的总交易量，直接影响该战队成员的分红收益。</p>
+    </div>
+  </section>
+
+  <!-- 资金分配 -->
+  <section>
+    <h2><span class="icon">💰</span>资金分配机制</h2>
+    <p>每笔门票购买的资金按以下比例分配：</p>
+    <div class="fund-flow">
+      <div class="fund-box">
+        <div class="pct">~55%</div>
+        <div class="lbl">🏆 奖池</div>
+      </div>
+      <div class="fund-box">
+        <div class="pct">~15%</div>
+        <div class="lbl">💸 战队分红</div>
+      </div>
+      <div class="fund-box">
+        <div class="pct">~5%</div>
+        <div class="lbl">🎰 空投池</div>
+      </div>
+      <div class="fund-box">
+        <div class="pct">~10%</div>
+        <div class="lbl">🏛️ P-team</div>
+      </div>
+      <div class="fund-box">
+        <div class="pct">~2%</div>
+        <div class="lbl">👥 邀请奖励</div>
+      </div>
+      <div class="fund-box">
+        <div class="pct">~13%</div>
+        <div class="lbl">🔄 下一轮</div>
+      </div>
+    </div>
+    <p style="margin-top:16px;">
+      资金在每笔购买时即时分配，所有分配在<strong>链上透明执行</strong>，任何人都可以验证。
+    </p>
+  </section>
+
+  <!-- 分红系统 -->
+  <section>
+    <h2><span class="icon">💸</span>战队分红系统</h2>
+    <p>
+      每笔门票收入的 <strong>~15%</strong> 进入分红池，按<strong>战队贡献比例</strong>分配给持有门票的玩家。
+    </p>
+    <ul>
+      <li><strong>分红计算：</strong>你所在战队的总购买量越大，该战队从分红池中获得的份额越多。</li>
+      <li><strong>个人分红：</strong>你在该战队中持有的门票数占战队总门票数的比例，决定你的个人分红金额。</li>
+      <li><strong>随时提取：</strong>分红可以随时提取到你的钱包，无需等待本轮结束。</li>
+      <li><strong>复利效应：</strong>越早加入并持续购买，累计的分红越多。</li>
+    </ul>
+    <div class="highlight">
+      <p>📊 <strong>举例：</strong>如果 Doge 战队贡献了本轮 40% 的交易量，那么 Doge 战队成员将分享分红池的 40%。你在 Doge 战队中持有 10% 的门票，就能拿到这部分分红的 10%。</p>
+    </div>
+  </section>
+
+  <!-- 空投系统 -->
+  <section>
+    <h2><span class="icon">🎰</span>随机空投系统</h2>
+    <p>
+      每笔门票购买都有<strong>概率触发空投奖励</strong>。这不是额外成本 —— 只是纯粹的额外收益。
+    </p>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="card-icon">🎲</div>
+        <div class="card-value">随机触发</div>
+        <div class="card-label">每次购买都有机会</div>
+      </div>
+      <div class="info-card">
+        <div class="card-icon">🎁</div>
+        <div class="card-value">额外奖励</div>
+        <div class="card-label">来自空投池的 SUI</div>
+      </div>
+      <div class="info-card">
+        <div class="card-icon">💯</div>
+        <div class="card-value">零成本</div>
+        <div class="card-label">不需要额外付费</div>
+      </div>
+    </div>
+    <p style="margin-top:16px;">
+      空投资金来自每笔购买的一部分（~5%），不断累积。幸运者可能获得远超门票价值的奖励。
+    </p>
+  </section>
+
+  <!-- 倒计时机制 -->
+  <section>
+    <h2><span class="icon">⏳</span>倒计时机制</h2>
+    <p>
+      倒计时是 ZeroHour 的核心驱动力。每轮开始时，计时器设定为初始值。
+      每次有人购买门票，计时器<strong>重置回初始值</strong>。
+    </p>
+    <div class="highlight">
+      <p>⏰ <strong>关键规则：</strong>当倒计时归零的那一刻，最后一位成功购买门票的地址赢得整个奖池。没有平局，没有争议 —— 链上时间戳说了算。</p>
+    </div>
+    <p style="margin-top:12px;">
+      这意味着你需要权衡：是现在买还是再等等？等太久可能被别人抢先，买太早又需要持续关注倒计时。
+      这种策略博弈正是 ZeroHour 的魅力所在。
+    </p>
+  </section>
+
+  <!-- 轮次流转 -->
+  <section>
+    <h2><span class="icon">🔄</span>轮次流转</h2>
+    <ol class="steps">
+      <li>
+        <div>
+          <h3>本轮结束</h3>
+          <p>倒计时归零 → 确定赢家 → 奖池自动转入赢家钱包 → 生成本轮结算数据。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>新轮开始</h3>
+          <p>下一轮自动启动。部分资金（~13%）从上一轮转入新轮奖池，确保新轮次立即有吸引力。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>永续循环</h3>
+          <p>游戏永不停止。每一轮都是新的开始，新的赢家，新的故事。</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 邀请系统 -->
+  <section>
+    <h2><span class="icon">👥</span>邀请奖励系统</h2>
+    <p>
+      分享你的<strong>专属邀请链接</strong>。当有人通过你的链接加入游戏并购买门票时，你将获得该笔购买金额的 <strong>~2%</strong> 作为邀请奖励。
+    </p>
+    <div class="highlight">
+      <p>🔗 邀请奖励直接从每笔购买中分配，由智能合约自动执行，<strong>无需信任、即时到账</strong>。</p>
+    </div>
+  </section>
+
+  <!-- 安全性 -->
+  <section>
+    <h2><span class="icon">🔐</span>安全与透明</h2>
+    <ul>
+      <li><strong>链上运行：</strong>所有游戏逻辑部署在 Sui 区块链上，由智能合约执行，不可篡改。</li>
+      <li><strong>资金透明：</strong>所有资金流动公开可查。奖池、分红、空投 —— 每一笔交易都记录在链上。</li>
+      <li><strong>无需托管：</strong>资金由智能合约管理，不由任何人或团队控制。即使开发者也无法提取合约资金。</li>
+      <li><strong>开源验证：</strong>合约代码开源，任何人都可以审核游戏逻辑。</li>
+    </ul>
+  </section>
+
+  <!-- 快速开始 -->
+  <section>
+    <h2><span class="icon">🚀</span>如何开始</h2>
+    <ol class="steps">
+      <li>
+        <div>
+          <h3>安装钱包</h3>
+          <p>下载并安装 <strong>Sui 兼容钱包</strong>（如 Sui Wallet、Martian Wallet、OKX Wallet 等）。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>获取 SUI</h3>
+          <p>在交易所购买 SUI 代币并转入你的钱包地址。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>进入游戏</h3>
+          <p>访问 ZeroHour 官网，连接钱包，选择战队。</p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>购买门票</h3>
+          <p>输入购买数量，确认交易 —— 你已经正式加入这场博弈！</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+</main>
+
+<footer class="page-footer">
+  <p>ZeroHour · Built on <a href="https://sui.io" target="_blank">Sui Network</a></p>
+  <p style="margin-top:4px;">时间是金钱。最后一位买家通吃一切。</p>
+</footer>
+
+</body>
+</html>
