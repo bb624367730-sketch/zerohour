@@ -1,6 +1,6 @@
 #[allow(implicit_const_copy, lint(self_transfer))]
 module fomo3d_sui::game {
-    use sui::coin::{Self, Coin, TreasuryCap};
+    use sui::coin::{Self, Coin};
     use sui::balance::{Self, Balance};
     use sui::sui::SUI;
     use sui::clock::{Self, Clock};
@@ -8,8 +8,6 @@ module fomo3d_sui::game {
     use sui::tx_context::{Self, TxContext};
     use sui::event;
     use sui::object::{Self, UID};
-
-    use fomo3d_sui::zh::{Self, ZH};
 
     // ─── Errors ───────────────────────────────────────────
     const E_INVALID_TEAM: u64 = 0;
@@ -41,8 +39,8 @@ module fomo3d_sui::game {
     const TEAM_CAT: u8 = 3;
 
     // Team allocation table: (player_div_bps, jackpot_bps, zh_bps) out of 10000
-    // fixed: referral=1000(10%), community=200(2%), airdrop=100(1%), pot_swap=100(1%)
-    // variable: player_div + jackpot + zh = 8600 bps (86%)
+    // fixed: referral=1000(10%), community=200(2%), airdrop=100(1%) = 1300 bps (13%)
+    // variable: player_div + jackpot + zh = 8700 bps (87%)
     //
     // Doge:  player_div=56%, jackpot=20%, zh=10%
     // Pepe:  player_div=43%, jackpot=35%, zh=8%
@@ -103,9 +101,8 @@ module fomo3d_sui::game {
         team_players: vector<u64>,   // 4 entries
         team_volume: vector<u64>,    // 4 entries
 
-        // ZH token
+        // ZH internal accounting (not a transferable token)
         zh_pool: Balance<SUI>,
-        zh_treasury: TreasuryCap<ZH>,
         zh_per_token: u64,
         zh_total_supply: u64,
 
@@ -206,12 +203,12 @@ module fomo3d_sui::game {
 
     // ─── Entry Functions ──────────────────────────────────
 
-    /// Create a new game. Requires AdminCap and ZH TreasuryCap (both held by package publisher).
-    entry fun create_game(_cap: &AdminCap, zh_treasury: TreasuryCap<ZH>, ctx: &mut TxContext) {
-        create_game_impl(tx_context::sender(ctx), zh_treasury, ctx);
+    /// Create a new game. Requires AdminCap (held by package publisher).
+    entry fun create_game(_cap: &AdminCap, ctx: &mut TxContext) {
+        create_game_impl(tx_context::sender(ctx), ctx);
     }
 
-    fun create_game_impl(sender: address, zh_treasury: TreasuryCap<ZH>, ctx: &mut TxContext) {
+    fun create_game_impl(sender: address, ctx: &mut TxContext) {
         let team_tickets = vector[0, 0, 0, 0];
         let team_players = vector[0, 0, 0, 0];
         let team_volume = vector[0, 0, 0, 0];
@@ -237,7 +234,6 @@ module fomo3d_sui::game {
             team_players,
             team_volume,
             zh_pool: balance::zero<SUI>(),
-            zh_treasury,
             zh_per_token: 0,
             zh_total_supply: 0,
             admin: sender,
@@ -401,15 +397,15 @@ module fomo3d_sui::game {
 
         // Player dividend from jackpot: varies by team.
         // carry + player_div must sum to 5000 so winner gets exactly 48%.
-        let (player_div_bps, carry_bps) = if (winner_team == TEAM_DOGE) (4000, 1000)
-            else if (winner_team == TEAM_PEPE) (4000, 1000)
-            else if (winner_team == TEAM_MONKEY) (2500, 2500)
-            else (2500, 2500); // Cat
-        let player_div_amount = (jackpot_value * player_div_bps) / 10000;
-        let carry_amount = (jackpot_value * carry_bps) / 10000;
+        let (player_div_bps, carry_bps) = if (winner_team == TEAM_DOGE) (4000u64, 1000u64)
+            else if (winner_team == TEAM_PEPE) (4000u64, 1000u64)
+            else if (winner_team == TEAM_MONKEY) (2500u64, 2500u64)
+            else (2500u64, 2500u64); // Cat
+        let player_div_amount = ((jackpot_value as u128) * (player_div_bps as u128) / 10000) as u64;
+        let carry_amount = ((jackpot_value as u128) * (carry_bps as u128) / 10000) as u64;
 
-        let community_amount = (jackpot_value * 200) / 10000;
-        let winner_div_amount = (jackpot_value * 4800) / 10000;
+        let community_amount = ((jackpot_value as u128) * 200 / 10000) as u64;
+        let winner_div_amount = ((jackpot_value as u128) * 4800 / 10000) as u64;
 
         // Execute splits in order: community first, then player div, carry, winner
         let community_balance = balance::split(&mut game.jackpot, community_amount);
@@ -611,7 +607,7 @@ module fomo3d_sui::game {
         let player_div_remaining = balance::split(&mut payment_balance, player_share_of_remaining);
         balance::join(&mut game.player_dividend_pool, player_div_remaining);
 
-        // ZH share — mint tokens to buyer, add SUI to zh_pool
+        // ZH share — credit buyer's internal balance, add SUI to zh_pool
         let zh_bps = get_zh_bps(team);
         if (zh_bps > 0) {
             let zh_amount = ((remaining as u128) * (zh_bps as u128) / 8700) as u64;
@@ -636,11 +632,7 @@ module fomo3d_sui::game {
             let zh_sui = balance::split(&mut payment_balance, zh_amount);
             balance::join(&mut game.zh_pool, zh_sui);
 
-            // Mint ZH tokens to buyer (1 base unit per MIST of ZH contribution)
-            let zh_coin = zh::mint(&mut game.zh_treasury, zh_amount, ctx);
-            transfer::public_transfer(zh_coin, player.owner);
-
-            // Update player ZH state
+            // Update player ZH state (internal accounting only — ZH is not a transferable token)
             player.zh_balance = player.zh_balance + zh_amount;
             player.zh_last_per_token = game.zh_per_token;
 

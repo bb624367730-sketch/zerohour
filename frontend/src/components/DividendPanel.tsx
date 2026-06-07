@@ -1,4 +1,5 @@
 import { useCurrentAccount, useSignAndExecuteTransaction } from '@mysten/dapp-kit';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import type { GameData } from '../hooks/useGame';
@@ -17,6 +18,7 @@ export function DividendPanel({ game }: Props) {
   const account = useCurrentAccount();
   const { player } = usePlayer(account?.address);
   const { mutate: signAndExecute } = useSignAndExecuteTransaction();
+  const queryClient = useQueryClient();
   const [claiming, setClaiming] = useState(false);
   const [claimingZh, setClaimingZh] = useState(false);
   const { t } = useT();
@@ -54,14 +56,32 @@ export function DividendPanel({ game }: Props) {
       signAndExecute(
         { transaction: tx },
         {
-          onSuccess: () => {
+          onSuccess: (result) => {
+            const effects = (result as any)?.effects;
+            if (effects?.status?.status === 'failure') {
+              playError();
+              const errMsg = effects?.status?.error ?? 'Transaction failed';
+              toast.error(`[RAW] ${String(errMsg).substring(0, 120)}`, { duration: 8000 });
+              queryClient.invalidateQueries({ queryKey: ['game'] });
+              queryClient.invalidateQueries({ queryKey: ['player'] });
+              setClaiming(false);
+              return;
+            }
             playClaim();
-            toast.success(t('div.claimSuccess', { amount: formatSui(pendingDividends) }));
+            const digest = result?.digest ? ` (${result.digest.slice(0, 10)}...)` : '';
+            toast.success(t('div.claimSuccess', { amount: formatSui(pendingDividends) }) + digest);
+            console.log('Claim dividends tx:', result);
+            queryClient.invalidateQueries({ queryKey: ['game'] });
+            queryClient.invalidateQueries({ queryKey: ['player'] });
             setClaiming(false);
           },
           onError: (err) => {
             playError();
-            toast.error(t('div.claimFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
+            const msg = String(err?.message ?? err);
+            // Show raw error for debugging — remove after root cause found
+            toast.error(`[RAW] ${msg.substring(0, 120)}`, { duration: 8000 });
+            queryClient.invalidateQueries({ queryKey: ['game'] });
+            queryClient.invalidateQueries({ queryKey: ['player'] });
             setClaiming(false);
           },
         },
@@ -80,14 +100,31 @@ export function DividendPanel({ game }: Props) {
       signAndExecute(
         { transaction: tx },
         {
-          onSuccess: () => {
+          onSuccess: (result) => {
+            const effects = (result as any)?.effects;
+            if (effects?.status?.status === 'failure') {
+              playError();
+              const errMsg = effects?.status?.error ?? 'Transaction failed';
+              toast.error(`[RAW ZH] ${String(errMsg).substring(0, 120)}`, { duration: 8000 });
+              queryClient.invalidateQueries({ queryKey: ['game'] });
+              queryClient.invalidateQueries({ queryKey: ['player'] });
+              setClaimingZh(false);
+              return;
+            }
             playClaim();
-            toast.success(t('div.zhClaimSuccess', { amount: formatSui(pendingZh) }));
+            const digest = result?.digest ? ` (${result.digest.slice(0, 10)}...)` : '';
+            toast.success(t('div.zhClaimSuccess', { amount: formatSui(pendingZh) }) + digest);
+            console.log('Claim ZH dividends tx:', result);
+            queryClient.invalidateQueries({ queryKey: ['game'] });
+            queryClient.invalidateQueries({ queryKey: ['player'] });
             setClaimingZh(false);
           },
           onError: (err) => {
             playError();
-            toast.error(t('div.zhClaimFailed', { msg: String(err?.message ?? err).substring(0, 80) }));
+            const msg = String(err?.message ?? err);
+            toast.error(`[RAW ZH] ${msg.substring(0, 120)}`, { duration: 8000 });
+            queryClient.invalidateQueries({ queryKey: ['game'] });
+            queryClient.invalidateQueries({ queryKey: ['player'] });
             setClaimingZh(false);
           },
         },
@@ -110,13 +147,24 @@ export function DividendPanel({ game }: Props) {
         {t('div.address', { addr: shortenAddress(account.address) })}
       </div>
 
+      {/* Debug info — always visible to diagnose claim issues */}
+      {player && (
+        <div className="div-debug" style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 8, lineHeight: 1.5 }}>
+          <div>pid: {player.id.slice(0, 10)}... | team: {player.team_id}</div>
+          <div>acc: {game.dividend_per_ticket}</div>
+          <div>chk: {player.last_dividend_per_ticket}</div>
+          <div>pending: {pendingDividends} MIST ({formatSui(pendingDividends)} SUI)</div>
+          <div>tickets: {player.tickets_owned} | pool: {formatSui(game.player_dividend_pool)} SUI</div>
+        </div>
+      )}
+
       <button
         className="btn btn-gold"
         disabled={pendingDividends === '0' || claiming}
         onClick={handleClaim}
         style={{ marginTop: 14 }}
       >
-        {claiming ? t('div.claiming') : t('div.claim')}
+        {claiming ? t('div.claiming') : pendingDividends === '0' ? t('div.noDividends') : t('div.claim')}
       </button>
 
       {/* ZH token section */}

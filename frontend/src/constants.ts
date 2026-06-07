@@ -1,6 +1,6 @@
 ﻿// Contract configuration — update these after deployment
-export const PACKAGE_ID = '0x773d9341eb97692b75c7c8d119ade24d04bd46b497fb70575cbe4957084e798f';
-export const GAME_OBJECT_ID = '0xbac0f26d4ed975953d3c6e985c10ed731f814903efa835e16af134c93a0b15ee';
+export const PACKAGE_ID = '0xa2f8be24ba14514b7b4bc105e2779a7fadda17d750f4a33777abf549e13c0420';
+export const GAME_OBJECT_ID = '0x798e1e37da40fbf95923eaacccd31822187c6bbebdb3cde4b057aaee5bd1b7ee';
 export const MODULE_NAME = 'game';
 
 // Team definitions
@@ -78,7 +78,6 @@ export function getTeamTransKey(teamId: number): TeamTransKey {
 
 // Sui constants
 export const SUI_DECIMALS = 1_000_000_000;
-export const ZH_COIN_TYPE = `${PACKAGE_ID}::zh::ZH`;
 
 // Network config — default to testnet
 export const NETWORK = 'testnet';

@@ -99,6 +99,22 @@ export function useGame() {
   };
 }
 
+function parsePlayer(content: any): PlayerData | null {
+  const f = content?.fields;
+  if (!f) return null;
+  const objId = typeof f.id === 'object' && f.id?.id ? f.id.id : String(f.id ?? '');
+  return {
+    id: objId,
+    owner: String(f.owner ?? ''),
+    tickets_owned: Number(f.tickets_owned ?? 0),
+    team_id: Number(f.team_id ?? 0),
+    last_dividend_per_ticket: String(f.last_dividend_per_ticket ?? '0'),
+    round: Number(f.round ?? 0),
+    zh_balance: String(f.zh_balance ?? '0'),
+    zh_last_per_token: String(f.zh_last_per_token ?? '0'),
+  };
+}
+
 export function usePlayer(address?: string) {
   const client = useSuiClient();
 
@@ -106,34 +122,65 @@ export function usePlayer(address?: string) {
     queryKey: ['player', address],
     queryFn: async () => {
       if (!address) return null;
-      const owned = await client.getOwnedObjects({
-        owner: address,
-        filter: {
-          StructType: `${PACKAGE_ID}::game::Player`,
-        },
-        options: { showContent: true },
-      });
+
+      // Fetch game info and player objects in parallel — no race condition
+      const [gameObj, owned] = await Promise.all([
+        client.getObject({ id: GAME_OBJECT_ID, options: { showContent: true } }),
+        client.getOwnedObjects({
+          owner: address,
+          filter: { StructType: `${PACKAGE_ID}::game::Player` },
+          options: { showContent: true },
+        }),
+      ]);
 
       if (owned.data.length === 0) return null;
 
-      const obj = owned.data[0];
-      const content = obj.data?.content as any;
-      if (content?.fields) {
-        const f = content.fields;
-        // The `id` field of a Sui object is { id: string }
-        const objId = typeof f.id === 'object' && f.id?.id ? f.id.id : String(f.id ?? '');
-        return {
-          id: objId,
-          owner: String(f.owner ?? ''),
-          tickets_owned: Number(f.tickets_owned ?? 0),
-          team_id: Number(f.team_id ?? 0),
-          last_dividend_per_ticket: String(f.last_dividend_per_ticket ?? '0'),
-          round: Number(f.round ?? 0),
-          zh_balance: String(f.zh_balance ?? '0'),
-          zh_last_per_token: String(f.zh_last_per_token ?? '0'),
-        } as PlayerData;
+      // Parse all player objects
+      const players = owned.data
+        .map((obj) => parsePlayer((obj.data?.content as any)))
+        .filter((p): p is PlayerData => p !== null);
+
+      if (players.length === 0) return null;
+
+      // Extract game round and accumulator from the game object
+      const gf = (gameObj.data?.content as any)?.fields;
+      const currentRound = gf ? Number(gf.round ?? 0) : 0;
+      const dividendPerTicket = BigInt(gf?.dividend_per_ticket ?? '0');
+
+      // Calculate pending dividends for each player, pick the one with the most
+      const calcPending = (p: PlayerData): bigint => {
+        if (p.tickets_owned === 0) return 0n;
+        const checkpoint = BigInt(p.last_dividend_per_ticket);
+        if (dividendPerTicket <= checkpoint) return 0n;
+        const diff = dividendPerTicket - checkpoint;
+        return (BigInt(p.tickets_owned) * diff) / BigInt(1_000_000_000);
+      };
+
+      // Prefer current round, then most pending dividends, then most tickets
+      const inRound = players.filter((p) => p.round === currentRound);
+      const candidates = inRound.length > 0 ? inRound : players;
+      const best = candidates
+        .sort((a, b) => {
+          const pa = calcPending(a);
+          const pb = calcPending(b);
+          if (pa !== pb) return Number(pb - pa);
+          return b.tickets_owned - a.tickets_owned;
+        })[0];
+
+      // Sum ZH across all players (ZH spans rounds)
+      let totalZh = 0n;
+      let totalZhCheckpoint = 0n;
+      for (const p of players) {
+        totalZh += BigInt(p.zh_balance);
+        const cp = BigInt(p.zh_last_per_token);
+        if (cp > totalZhCheckpoint) totalZhCheckpoint = cp;
       }
-      return null;
+
+      return {
+        ...best,
+        zh_balance: String(totalZh),
+        zh_last_per_token: String(totalZhCheckpoint),
+      };
     },
     enabled: !!address,
     refetchInterval: 5000,

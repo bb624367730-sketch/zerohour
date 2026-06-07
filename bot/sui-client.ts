@@ -13,6 +13,7 @@ export const EVENT_TYPES = {
   DividendsClaimed: `${config.packageId}::game::DividendsClaimed`,
   AirdropWon: `${config.packageId}::game::AirdropWon`,
   RoundEnded: `${config.packageId}::game::RoundEnded`,
+  ZHClaimed: `${config.packageId}::game::ZHClaimed`,
 } as const;
 
 // Sui EventId is { txDigest: string, eventSeq: string }
@@ -53,11 +54,17 @@ export interface RoundEndedEvent {
   total_volume: string;
 }
 
+export interface ZHClaimedEvent {
+  player: string;
+  amount: string;
+}
+
 export type GameEvent =
   | { type: "TicketPurchased"; data: TicketPurchasedEvent }
   | { type: "DividendsClaimed"; data: DividendsClaimedEvent }
   | { type: "AirdropWon"; data: AirdropWonEvent }
-  | { type: "RoundEnded"; data: RoundEndedEvent };
+  | { type: "RoundEnded"; data: RoundEndedEvent }
+  | { type: "ZHClaimed"; data: ZHClaimedEvent };
 
 export function parseEvent(e: any): GameEvent | null {
   try {
@@ -109,6 +116,15 @@ export function parseEvent(e: any): GameEvent | null {
           jackpot_amount: String(fields.jackpot_amount ?? "0"),
           total_tickets_sold: String(fields.total_tickets_sold ?? "0"),
           total_volume: String(fields.total_volume ?? "0"),
+        },
+      };
+    }
+    if (type.includes("::ZHClaimed")) {
+      return {
+        type: "ZHClaimed",
+        data: {
+          player: String(fields.player ?? ""),
+          amount: String(fields.amount ?? "0"),
         },
       };
     }

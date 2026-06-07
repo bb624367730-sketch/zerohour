@@ -101,6 +101,19 @@ export function formatTweet(event: GameEvent): string | null {
         `#ZeroHour #Sui`,
       ].join("\n");
     }
+    case "ZHClaimed": {
+      const e = event.data;
+      const amount = fmtSui(e.amount);
+      const bn = BigInt(e.amount);
+      if (bn < SUI_DECIMALS / 100n) return null; // skip < 0.01 SUI
+      const player = fmtAddr(e.player);
+
+      return [
+        `💸 ${player} claimed ${amount} SUI in ZH dividends`,
+        ``,
+        `#ZeroHour #Sui #ZH`,
+      ].join("\n");
+    }
     default:
       return null;
   }

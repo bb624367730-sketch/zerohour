@@ -59,6 +59,9 @@ export interface Translations {
   'div.zhClaimSuccess': string;
   'div.zhClaimFailed': string;
   'div.zhBadge': string;
+  'div.noDividends': string;
+  'div.alreadyClaimed': string;
+  'div.zhAlreadyClaimed': string;
   // RoundEnded
   'roundEnded.title': string;
   'roundEnded.jackpotLabel': string;
@@ -66,6 +69,8 @@ export interface Translations {
   'roundEnded.claimButton': string;
   'roundEnded.pending': string;
   'roundEnded.hint': string;
+  'roundEnded.claimSuccess': string;
+  'roundEnded.claimFailed': string;
   // Leaderboard
   'lb.title': string;
   'lb.empty': string;
@@ -236,6 +241,7 @@ export interface Translations {
   'feed.airdrop': string;
   'feed.dividend': string;
   'feed.roundEnd': string;
+  'feed.zhClaim': string;
 }
 
 const en: Translations = {
@@ -247,7 +253,7 @@ const en: Translations = {
   'game.leader': 'Leader',
   'game.none': 'None',
   'game.tagline': 'Last buyer wins the jackpot — each ticket adds 30 seconds',
-  'game.totalPlayers': 'Total Players',
+  'game.totalPlayers': 'Team Joins',
   'countdown.ended': 'Round Ended',
   'team.divPct': 'Div {pct}%',
   'team.jackpotPct': 'Jackpot {pct}%',
@@ -290,12 +296,17 @@ const en: Translations = {
   'div.zhClaimSuccess': 'Claimed {amount} SUI from ZH dividends!',
   'div.zhClaimFailed': 'ZH claim failed: {msg}',
   'div.zhBadge': 'ZH',
+  'div.noDividends': 'No Dividends',
+  'div.alreadyClaimed': 'Dividends already auto-claimed during ticket purchase',
+  'div.zhAlreadyClaimed': 'ZH dividends already auto-claimed during ticket purchase',
   'roundEnded.title': 'Round Ended — Jackpot Time!',
   'roundEnded.jackpotLabel': 'Jackpot: {amount} SUI',
   'roundEnded.noTickets': 'No tickets were sold this round. Starting fresh!',
   'roundEnded.claimButton': 'End Round & Distribute Jackpot',
   'roundEnded.pending': 'Processing...',
   'roundEnded.hint': 'Winner is {emoji} {team} — last buyer takes it all!',
+  'roundEnded.claimSuccess': 'Round ended! Jackpot {amount} SUI distributed. You are the winner!',
+  'roundEnded.claimFailed': 'End round failed: {msg}',
   'lb.title': 'Team Rankings',
   'lb.empty': 'No players yet. Be the first!',
   'lb.colRank': '#',
@@ -457,6 +468,7 @@ const en: Translations = {
   'feed.airdrop': '{player} won airdrop {amount} SUI',
   'feed.dividend': '{player} claimed {amount} SUI dividends',
   'feed.roundEnd': 'Round #{round} ended — {winner} {emoji} {team} won {amount} SUI',
+  'feed.zhClaim': '{player} claimed {amount} SUI in ZH dividends',
 };
 
 const zhCN: Translations = {
@@ -468,7 +480,7 @@ const zhCN: Translations = {
   'game.leader': '领先者',
   'game.none': '暂无',
   'game.tagline': '最后一位购买者赢得奖池 — 每张门票延长 30 秒',
-  'game.totalPlayers': '总玩家数',
+  'game.totalPlayers': '队伍加入',
   'countdown.ended': '本轮已结束',
   'team.divPct': '分红 {pct}%',
   'team.jackpotPct': '奖池 {pct}%',
@@ -511,12 +523,17 @@ const zhCN: Translations = {
   'div.zhClaimSuccess': '已从ZH领取 {amount} SUI 分红！',
   'div.zhClaimFailed': 'ZH领取失败：{msg}',
   'div.zhBadge': 'ZH',
+  'div.noDividends': '暂无分红',
+  'div.alreadyClaimed': '分红已在购票时自动领取',
+  'div.zhAlreadyClaimed': 'ZH分红已在购票时自动领取',
   'roundEnded.title': '本轮结束 — 奖池派发！',
   'roundEnded.jackpotLabel': '奖池：{amount} SUI',
   'roundEnded.noTickets': '本轮未售出门票，即将开始新一轮！',
   'roundEnded.claimButton': '结束本轮并派发奖池',
   'roundEnded.pending': '处理中...',
   'roundEnded.hint': '赢家是 {emoji} {team} — 最后购买者赢得一切！',
+  'roundEnded.claimSuccess': '轮次结束！奖池 {amount} SUI 已派发。你是赢家！',
+  'roundEnded.claimFailed': '结束轮次失败：{msg}',
   'lb.title': '战队排行',
   'lb.empty': '还没有玩家加入，成为第一个！',
   'lb.colRank': '#',
@@ -678,6 +695,7 @@ const zhCN: Translations = {
   'feed.airdrop': '{player} 获得空投 {amount} SUI',
   'feed.dividend': '{player} 领取了 {amount} SUI 分红',
   'feed.roundEnd': '第 {round} 轮结束 — {winner} {emoji} {team} 赢得 {amount} SUI',
+  'feed.zhClaim': '{player} 领取了 {amount} SUI ZH分红',
 };
 
 const ja: Translations = {
@@ -689,7 +707,7 @@ const ja: Translations = {
   'game.leader': 'リーダー',
   'game.none': 'なし',
   'game.tagline': '最後の購入者がジャックポットを獲得 — 1枚ごとに30秒延長',
-  'game.totalPlayers': '総プレイヤー数',
+  'game.totalPlayers': 'チーム参加',
   'countdown.ended': 'ラウンド終了',
   'team.divPct': '配当 {pct}%',
   'team.jackpotPct': 'JP {pct}%',
@@ -732,12 +750,17 @@ const ja: Translations = {
   'div.zhClaimSuccess': 'ZH配当から {amount} SUIを請求しました！',
   'div.zhClaimFailed': 'ZH請求失敗：{msg}',
   'div.zhBadge': 'ZH',
+  'div.noDividends': '配当なし',
+  'div.alreadyClaimed': '配当はチケット購入時に自動請求済みです',
+  'div.zhAlreadyClaimed': 'ZH配当はチケット購入時に自動請求済みです',
   'roundEnded.title': 'ラウンド終了 — ジャックポット配布！',
   'roundEnded.jackpotLabel': 'ジャックポット：{amount} SUI',
   'roundEnded.noTickets': '今ラウンドはチケットが販売されませんでした。新しくスタート！',
   'roundEnded.claimButton': 'ラウンド終了 & ジャックポット配布',
   'roundEnded.pending': '処理中...',
   'roundEnded.hint': '勝者は {emoji} {team} — 最後の購入者が全てを手に入れる！',
+  'roundEnded.claimSuccess': 'ラウンド終了！ジャックポット {amount} SUI が配布されました。あなたの勝ちです！',
+  'roundEnded.claimFailed': 'ラウンド終了に失敗：{msg}',
   'lb.title': 'チームランキング',
   'lb.empty': 'まだプレイヤーがいません。最初のプレイヤーになりましょう！',
   'lb.colRank': '#',
@@ -899,6 +922,7 @@ const ja: Translations = {
   'feed.airdrop': '{player} がエアドロップ {amount} SUI を獲得',
   'feed.dividend': '{player} が {amount} SUI の配当を請求',
   'feed.roundEnd': '第 {round} ラウンド終了 — {winner} {emoji} {team} が {amount} SUI を獲得',
+  'feed.zhClaim': '{player} が {amount} SUI のZH配当を請求しました',
 };
 
 const ko: Translations = {
@@ -910,7 +934,7 @@ const ko: Translations = {
   'game.leader': '리더',
   'game.none': '없음',
   'game.tagline': '마지막 구매자가 잭팟 획득 — 티켓당 30초 추가',
-  'game.totalPlayers': '총 플레이어',
+  'game.totalPlayers': '팀 참가',
   'countdown.ended': '라운드 종료',
   'team.divPct': '배당 {pct}%',
   'team.jackpotPct': '잭팟 {pct}%',
@@ -953,12 +977,17 @@ const ko: Translations = {
   'div.zhClaimSuccess': 'ZH 배당금에서 {amount} SUI를 수령했습니다!',
   'div.zhClaimFailed': 'ZH 수령 실패: {msg}',
   'div.zhBadge': 'ZH',
+  'div.noDividends': '배당금 없음',
+  'div.alreadyClaimed': '티켓 구매 시 배당금이 이미 자동 수령되었습니다',
+  'div.zhAlreadyClaimed': '티켓 구매 시 ZH 배당금이 이미 자동 수령되었습니다',
   'roundEnded.title': '라운드 종료 — 잭팟 지급 시간!',
   'roundEnded.jackpotLabel': '잭팟: {amount} SUI',
   'roundEnded.noTickets': '이번 라운드는 티켓이 판매되지 않았습니다. 새로 시작합니다!',
   'roundEnded.claimButton': '라운드 종료 & 잭팟 분배',
   'roundEnded.pending': '처리 중...',
   'roundEnded.hint': '승자는 {emoji} {team} — 마지막 구매자가 모든 것을 가져갑니다!',
+  'roundEnded.claimSuccess': '라운드 종료! 잭팟 {amount} SUI가 분배되었습니다. 당신이 승자입니다!',
+  'roundEnded.claimFailed': '라운드 종료 실패: {msg}',
   'lb.title': '팀 랭킹',
   'lb.empty': '아직 플레이어가 없습니다. 첫 번째가 되세요!',
   'lb.colRank': '#',
@@ -1120,6 +1149,7 @@ const ko: Translations = {
   'feed.airdrop': '{player} 님이 에어드롭 {amount} SUI 획득',
   'feed.dividend': '{player} 님이 배당금 {amount} SUI 수령',
   'feed.roundEnd': '{round} 라운드 종료 — {winner} {emoji} {team} 님이 {amount} SUI 획득',
+  'feed.zhClaim': '{player} 님이 {amount} SUI ZH 배당금을 수령했습니다',
 };
 
 export const translations: Record<Lang, Translations> = { en, 'zh-CN': zhCN, ja, ko };

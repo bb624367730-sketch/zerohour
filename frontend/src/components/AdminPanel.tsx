@@ -33,7 +33,13 @@ export function AdminPanel({ game }: Props) {
     signAndExecute(
       { transaction: tx },
       {
-        onSuccess: () => {
+        onSuccess: (result) => {
+          const effects = (result as any)?.effects;
+          if (effects?.status?.status === 'failure') {
+            toast.error(t('admin.withdrawFailed', { msg: String(effects?.status?.error ?? 'Transaction failed').substring(0, 80) }));
+            setBusy(null);
+            return;
+          }
           toast.success(t('admin.withdrawSuccess', { amount: withdrawAmount }));
           setWithdrawAmount('');
           setBusy(null);
@@ -52,7 +58,13 @@ export function AdminPanel({ game }: Props) {
     signAndExecute(
       { transaction: tx },
       {
-        onSuccess: () => {
+        onSuccess: (result) => {
+          const effects = (result as any)?.effects;
+          if (effects?.status?.status === 'failure') {
+            toast.error(t('admin.actionFailed', { msg: String(effects?.status?.error ?? 'Transaction failed').substring(0, 80) }));
+            setBusy(null);
+            return;
+          }
           toast.success(game.paused ? t('admin.unpaused') : t('admin.paused'));
           setBusy(null);
         },
@@ -72,7 +84,13 @@ export function AdminPanel({ game }: Props) {
     signAndExecute(
       { transaction: tx },
       {
-        onSuccess: () => {
+        onSuccess: (result) => {
+          const effects = (result as any)?.effects;
+          if (effects?.status?.status === 'failure') {
+            toast.error(t('admin.seedFailed', { msg: String(effects?.status?.error ?? 'Transaction failed').substring(0, 80) }));
+            setBusy(null);
+            return;
+          }
           toast.success(t('admin.seedSuccess', { amount: seedAmount }));
           setSeedAmount('');
           setBusy(null);

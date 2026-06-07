@@ -1,4 +1,5 @@
 import { useCurrentAccount, useSignAndExecuteTransaction } from '@mysten/dapp-kit';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import type { GameData } from '../hooks/useGame';
@@ -18,8 +19,10 @@ export function BuyKeys({ game }: Props) {
   const account = useCurrentAccount();
   const { player, isLoading: playerLoading } = usePlayer(account?.address);
   const { mutate: signAndExecute, isPending } = useSignAndExecuteTransaction();
+  const queryClient = useQueryClient();
   const [selectedTeam, setSelectedTeam] = useState(0);
-  const [ticketCount, setTicketCount] = useState(1);
+  const [ticketInput, setTicketInput] = useState('1');
+  const ticketCount = Number(ticketInput) || 0;
   const [referrer, setReferrer] = useState('');
   const [status, setStatus] = useState<'idle' | 'buying' | 'success' | 'error'>('idle');
   const [flashTeamId, setFlashTeamId] = useState(-1);
@@ -52,9 +55,19 @@ export function BuyKeys({ game }: Props) {
       signAndExecute(
         { transaction: tx },
         {
-          onSuccess: (_result) => {
+          onSuccess: (result) => {
+            const effects = (result as any)?.effects;
+            if (effects?.status?.status === 'failure') {
+              playError();
+              const errMsg = effects?.status?.error ?? 'Transaction failed';
+              toast.error(t('buy.txFailed', { msg: String(errMsg).substring(0, 80) }));
+              setStatus('idle');
+              return;
+            }
             playBuy();
             toast.success(t('buy.success', { n: ticketCount }));
+            queryClient.invalidateQueries({ queryKey: ['game'] });
+            queryClient.invalidateQueries({ queryKey: ['player'] });
             setStatus('idle');
             setFlashTeamId(selectedTeam);
             setPricePop(true);
@@ -88,10 +101,16 @@ export function BuyKeys({ game }: Props) {
           type="number"
           min={1}
           max={500}
-          value={ticketCount}
-          onChange={(e) => setTicketCount(Math.max(1, Math.min(500, Number(e.target.value) || 1)))}
+          placeholder="1"
+          value={ticketInput}
+          onChange={(e) => setTicketInput(e.target.value)}
+          onBlur={() => {
+            const n = Number(ticketInput);
+            if (!ticketInput || n < 1) setTicketInput('1');
+            else if (n > 500) setTicketInput('500');
+          }}
         />
-        <button className="btn btn-secondary btn-sm" onClick={() => setTicketCount(1)}>
+        <button className="btn btn-secondary btn-sm" onClick={() => setTicketInput('1')}>
           {t('buy.reset')}
         </button>
       </div>

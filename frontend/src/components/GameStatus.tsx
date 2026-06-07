@@ -10,7 +10,7 @@ interface Props {
 export function GameStatus({ game }: Props) {
   const { t } = useT();
   const jackpotSui = formatSui(game.jackpot);
-  const totalKeys = BigInt(game.total_tickets_sold);
+  const totalKeys = BigInt(game.total_tickets_sold || '0');
   const totalVolume = formatSui(game.total_sui_volume);
   const totalPlayers = game.team_players.reduce((sum, p) => sum + Number(p), 0);
 

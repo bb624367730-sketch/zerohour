@@ -21,6 +21,7 @@ const EVENT_ICONS: Record<ActivityEvent['type'], string> = {
   airdrop: '\u{2728}',
   dividend: '\u{1F4B0}',
   round_end: '\u{1F3C6}',
+  zh_claim: '\u{1F4B8}',
 };
 
 function formatEventMessage(
@@ -60,6 +61,11 @@ function formatEventMessage(
         amount: formatSui(e.jackpot_amount ?? '0'),
       });
     }
+    case 'zh_claim':
+      return t('feed.zhClaim', {
+        player: shortenAddress(e.player ?? ''),
+        amount: formatSui(e.amount ?? '0'),
+      });
   }
 }
 

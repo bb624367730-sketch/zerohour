@@ -1,7 +1,7 @@
 #[test_only]
 module fomo3d_sui::game_tests {
     use fomo3d_sui::game::{Self, Game, Player};
-    use fomo3d_sui::zh;
+
     use sui::test_scenario::{Self, Scenario};
     use sui::sui::SUI;
     use sui::coin::{Self, Coin};
@@ -26,8 +26,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -52,8 +52,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -86,8 +86,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -145,8 +145,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -223,8 +223,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -266,8 +266,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -297,8 +297,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -354,8 +354,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -415,8 +415,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -482,8 +482,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -547,8 +547,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -604,8 +604,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 
@@ -690,8 +690,8 @@ module fomo3d_sui::game_tests {
         test_scenario::next_tx(&mut scenario, ADMIN);
         {
             let cap = game::make_admin_cap(test_scenario::ctx(&mut scenario));
-            let zh_treasury = zh::make_treasury_cap(test_scenario::ctx(&mut scenario));
-            game::create_game(&cap, zh_treasury, test_scenario::ctx(&mut scenario));
+
+            game::create_game(&cap, test_scenario::ctx(&mut scenario));
             unit_test::destroy(cap);
         };
 

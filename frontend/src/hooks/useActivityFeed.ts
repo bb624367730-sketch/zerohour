@@ -3,7 +3,7 @@ import { useSuiClient } from '@mysten/dapp-kit';
 import { PACKAGE_ID } from '../constants';
 
 export interface ActivityEvent {
-  type: 'ticket' | 'airdrop' | 'dividend' | 'round_end';
+  type: 'ticket' | 'airdrop' | 'dividend' | 'round_end' | 'zh_claim';
   timestamp: number;
   round: number;
   buyer?: string;
@@ -86,6 +86,16 @@ function parseEvent(raw: RawEvent): ActivityEvent | null {
       jackpot_amount: data.jackpot_amount,
       total_tickets_sold: data.total_tickets_sold,
       total_volume: data.total_volume,
+    };
+  }
+
+  if (raw.type.endsWith('::ZHClaimed')) {
+    return {
+      type: 'zh_claim',
+      timestamp,
+      round,
+      player: data.player,
+      amount: data.amount,
     };
   }
 

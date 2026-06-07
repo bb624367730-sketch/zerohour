@@ -31,6 +31,8 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.error) {
       const msg = messages[this.props.lang] ?? messages.en;
+      const errMsg = this.state.error?.message || String(this.state.error);
+      const errStack = this.state.error?.stack;
       return (
         <div style={{
           display: 'flex',
@@ -45,6 +47,21 @@ export class ErrorBoundary extends Component<Props, State> {
         }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>⚠</div>
           <h2 style={{ marginBottom: 12 }}>{msg.title}</h2>
+          <pre style={{
+            marginTop: 12,
+            padding: 12,
+            background: '#1a1a2e',
+            borderRadius: 8,
+            maxWidth: '90vw',
+            overflow: 'auto',
+            fontSize: 13,
+            color: '#f87171',
+            textAlign: 'left',
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-all',
+          }}>
+            {errMsg}
+          </pre>
           <button
             className="btn btn-primary"
             onClick={this.handleRetry}

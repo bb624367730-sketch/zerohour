@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useSignAndExecuteTransaction } from '@mysten/dapp-kit';
+import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { buildEndRoundTx } from '../lib/sui';
 import { formatSui, shortenAddress } from '../lib/sui';
 import { getTeamInfo, getTeamTransKey } from '../constants';
 import { useCountdown } from '../hooks/useCountdown';
 import { useT } from '../i18n/context';
 import type { GameData } from '../hooks/useGame';
-import { playJackpot } from '../lib/sounds';
+import { playJackpot, playClaim, playError } from '../lib/sounds';
 
 interface Props {
   game: GameData;
@@ -15,6 +17,7 @@ interface Props {
 export function RoundEnded({ game }: Props) {
   const { isExpired } = useCountdown(Number(game.timer_end_ts));
   const { mutate: signAndExecute, isPending } = useSignAndExecuteTransaction();
+  const queryClient = useQueryClient();
   const { t } = useT();
 
   useEffect(() => {
@@ -30,7 +33,35 @@ export function RoundEnded({ game }: Props) {
 
   const handleEndRound = () => {
     const tx = buildEndRoundTx();
-    signAndExecute({ transaction: tx });
+    signAndExecute(
+      { transaction: tx },
+      {
+        onSuccess: (result) => {
+          const effects = (result as any)?.effects;
+          if (effects?.status?.status === 'failure') {
+            playError();
+            const errMsg = effects?.status?.error ?? 'Transaction failed';
+            toast.error(`[RAW END] ${String(errMsg).substring(0, 120)}`, { duration: 8000 });
+            queryClient.invalidateQueries({ queryKey: ['game'] });
+            queryClient.invalidateQueries({ queryKey: ['player'] });
+            return;
+          }
+          playClaim();
+          const digest = result?.digest ? ` (${result.digest.slice(0, 10)}...)` : '';
+          toast.success(t('roundEnded.claimSuccess', { amount: formatSui(game.jackpot) }) + digest);
+          console.log('End round tx:', result);
+          queryClient.invalidateQueries({ queryKey: ['game'] });
+          queryClient.invalidateQueries({ queryKey: ['player'] });
+        },
+        onError: (err) => {
+          playError();
+          const msg = String(err?.message ?? err);
+          toast.error(`[RAW END] ${msg.substring(0, 120)}`, { duration: 8000 });
+          queryClient.invalidateQueries({ queryKey: ['game'] });
+          queryClient.invalidateQueries({ queryKey: ['player'] });
+        },
+      },
+    );
   };
 
   return (

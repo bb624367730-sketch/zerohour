@@ -23,6 +23,7 @@ export function Header() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{fontSize:9,color:'var(--text-muted)',opacity:0.4}}>v2</span>
           <SoundToggle />
           {account && (
             <div className="balance-badge">
